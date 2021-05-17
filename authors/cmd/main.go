@@ -8,9 +8,9 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"go.uber.org/zap"
 
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/config"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/handler/rest"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/service"
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/config"
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/handler/rest"
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/service"
 )
 
 func main() {

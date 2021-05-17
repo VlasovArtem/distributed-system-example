@@ -1,4 +1,4 @@
-module gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors
+module github.com/VlasovArtem/distributed-system-example/authors
 
 go 1.16
 
