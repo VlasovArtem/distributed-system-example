@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+
+  authors:
+    build:
+      context: ./authors
+      network: host
+    ports:
+      - "8094:8080"
+    expose:
+      - "8080"
+
+  books:
+    build:
+      context: ./books
+      network: host
+    ports:
+      - "8095:8080"
+    expose:
+      - "8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      network: host
+    environment:
+      - BOOKS_URL=http://books:8080/api/v1/books
+      - AUTHORS_URL=http://authors:8080/api/v1/authors
+    expose:
+      - "8080"
+    ports:
+      - "8096:8080"
+
+  rabbitmq:
+    image: rabbitmq:3.8.14-management-alpine
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
