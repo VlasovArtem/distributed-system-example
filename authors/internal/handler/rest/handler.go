@@ -8,10 +8,7 @@ import (
 	"net/http"
 )
 
-
-
 func New(s *service.Service) http.Handler {
-	// TODO create 2 handlers: api/v1/authors and api/v1/authors/{id}
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/api/v1/authors", FindAllAuthors(s))

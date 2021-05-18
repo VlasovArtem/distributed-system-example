@@ -27,6 +27,6 @@ func main() {
 
 	(&http.Server{
 		Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
-		Handler: handler.New(cfg.Books.URL, cfg.Authors.URL),
+		Handler: handler.New(&cfg),
 	}).ListenAndServe()
 }

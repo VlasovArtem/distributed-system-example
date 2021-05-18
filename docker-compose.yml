@@ -5,19 +5,29 @@ services:
     build:
       context: ./authors
       network: host
+    environment:
+      - HTTP_ENABLED=false
+      - RPC_ENABLED=true
     ports:
       - "8094:8080"
+      - "50051:50051"
     expose:
       - "8080"
+      - "50051"
 
   books:
     build:
       context: ./books
       network: host
+    environment:
+      - HTTP_ENABLED=false
+      - RPC_ENABLED=true
     ports:
       - "8095:8080"
+      - "50052:50052"
     expose:
       - "8080"
+      - "50052"
 
   frontend:
     build:
@@ -26,16 +36,20 @@ services:
     environment:
       - BOOKS_URL=http://books:8080/api/v1/books
       - AUTHORS_URL=http://authors:8080/api/v1/authors
+      - BOOKS_RPC=books:50052
+      - AUTHORS_RPC=authors:50051
+      - HTTPENABLED=false
+      - RPCENABLED=true
     expose:
       - "8080"
     ports:
       - "8096:8080"
 
-  rabbitmq:
-    image: rabbitmq:3.8.14-management-alpine
-    expose:
-      - "5672"
-      - "15672"
-    ports:
-      - "15672:15672"
-      - "5672:5672"
+#  rabbitmq:
+#    image: rabbitmq:3.8.14-management-alpine
+#    expose:
+#      - "5672"
+#      - "15672"
+#    ports:
+#      - "15672:15672"
+#      - "5672:5672"
