@@ -8,8 +8,8 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"go.uber.org/zap"
 
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/frontend/internal/config"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/frontend/internal/handler"
+	"github.com/VlasovArtem/distributed-system-example/frontend/internal/config"
+	"github.com/VlasovArtem/distributed-system-example/frontend/internal/handler"
 )
 
 func main() {
