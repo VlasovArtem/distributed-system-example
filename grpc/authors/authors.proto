@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "github.com/VlasovArtem/distributed-system-example/authors/internal/rpc";
+
+message Author {
+  string ID = 1;
+  string FirstName = 2;
+  string LastName = 3;
+}
+
+message AuthorsResponse {
+  repeated Author authors = 1;
+}
+
+message FindAuthorRequest {
+  string ID = 1;
+}
+
+service Authors {
+  rpc GetAuthors() returns (AuthorsResponse);
+  rpc FindAuthor(FindAuthorRequest) returns (Author);
+}
