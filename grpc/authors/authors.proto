@@ -1,6 +1,7 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
-option go_package = "github.com/VlasovArtem/distributed-system-example/authors/internal/rpc";
+option go_package = "github.com/VlasovArtem/distributed-system-example/authors";
 
 message Author {
   string ID = 1;
@@ -17,6 +18,6 @@ message FindAuthorRequest {
 }
 
 service Authors {
-  rpc GetAuthors() returns (AuthorsResponse);
+  rpc GetAuthors(google.protobuf.Empty) returns (AuthorsResponse);
   rpc FindAuthor(FindAuthorRequest) returns (Author);
 }
