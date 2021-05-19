@@ -10,6 +10,15 @@ message Book {
   uint32 AuthorID = 4;
 }
 
+message BookAndAuthor {
+  string ID = 1;
+  string Title = 2;
+  uint32 Pages = 3;
+  uint32 AuthorID = 4;
+  string FirstName = 5;
+  string LastName = 6;
+}
+
 message BooksResponse {
   repeated Book books = 1;
 }
@@ -21,4 +30,5 @@ message FindBookRequest {
 service Books {
   rpc GetBooks(google.protobuf.Empty) returns (BooksResponse);
   rpc FindBook(FindBookRequest) returns (Book);
+  rpc AddBookAndAuthor(BookAndAuthor) returns (google.protobuf.Empty);
 }
