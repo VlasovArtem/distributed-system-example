@@ -5,7 +5,6 @@ type Config struct {
 	Books       Books
 	Authors     Authors
 	RPCEnabled  bool
-	HTTPEnabled bool
 }
 
 type HTTP struct {

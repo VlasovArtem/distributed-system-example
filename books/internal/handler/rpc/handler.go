@@ -41,3 +41,20 @@ func (s *Server) FindBook(_ context.Context, bookRequest *pb.FindBookRequest) (*
 		AuthorID: uint32(book.AuthorID),
 	}, nil
 }
+
+func (s *Server) AddBookAndAuthor(_ context.Context, in *pb.BookAndAuthor) (*emptypb.Empty, error) {
+	bookAndAuthor := service.BookAndAuthor{
+		Book: service.Book{
+			ID:       in.ID,
+			Title:    in.Title,
+			Pages:    int(in.Pages),
+			AuthorID: int(in.AuthorID),
+		},
+		FirstName: in.FirstName,
+		LastName:  in.LastName,
+	}
+
+	s.Service.Add(bookAndAuthor)
+
+	return &emptypb.Empty{}, nil
+}

@@ -3,6 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,8 +15,9 @@ func New(s *service.Service) http.Handler {
 	// TODO create 2 handlers: api/v1/books and api/v1/books/{id}
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/api/v1/books", FindAllBooks(s))
-	router.HandleFunc("/api/v1/books/{id}", FindBookById(s))
+	router.HandleFunc("/api/v1/books", FindAllBooks(s)).Methods("GET")
+	router.HandleFunc("/api/v1/books/{id}", FindBookById(s)).Methods("GET")
+	router.HandleFunc("/api/v1/books", AddBookAndAuthor(s)).Methods("PUT")
 
 	return router
 }
@@ -43,4 +45,29 @@ func FindAllBooks(s *service.Service) http.HandlerFunc {
 
 		json.NewEncoder(w).Encode(books)
 	}
+}
+
+func AddBookAndAuthor(s *service.Service) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var bookAndAuthor = service.BookAndAuthor{}
+
+		reqBody, err := ioutil.ReadAll(r.Body)
+
+		if err != nil {
+			handleError(w, 400, err.Error())
+			return
+		}
+
+		if err = json.Unmarshal(reqBody, &bookAndAuthor); err != nil {
+			handleError(w, 400, err.Error())
+			return
+		}
+
+		s.Add(bookAndAuthor)
+	}
+}
+
+func handleError(w http.ResponseWriter, responseCode int, message string)  {
+	w.WriteHeader(responseCode)
+	w.Write([]byte(message))
 }

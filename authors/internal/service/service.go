@@ -5,9 +5,19 @@ import (
 )
 
 var ErrNotFound = errors.New("not found")
+var QueueName = "BookAndAuthor"
 
 type Author struct {
 	ID        string
+	FirstName string
+	LastName  string
+}
+
+type BookAndAuthor struct {
+	ID        string
+	Title     string
+	Pages     int
+	AuthorID  int
 	FirstName string
 	LastName  string
 }
@@ -18,11 +28,12 @@ type Service struct {
 
 func New() *Service {
 	return &Service{repo: map[string]Author{
-		"1": {ID: "1", FirstName: "Loreth Anne", LastName: "White - v2"},
-		"2": {ID: "2", FirstName: "Lisa", LastName: "Regan - v2"},
-		"3": {ID: "3", FirstName: "Ty", LastName: "Patterson - v2"},
-	}}
+			"1": {ID: "1", FirstName: "Loreth Anne", LastName: "White - v2"},
+			"2": {ID: "2", FirstName: "Lisa", LastName: "Regan - v2"},
+			"3": {ID: "3", FirstName: "Ty", LastName: "Patterson - v2"},
+		}}
 }
+
 
 func (s *Service) List() []Author {
 	result := make([]Author, 0, len(s.repo))
@@ -37,4 +48,10 @@ func (s *Service) GetByID(id string) (Author, error) {
 		return a, nil
 	}
 	return Author{}, ErrNotFound
+}
+
+func (s *Service) AddAuthor(author Author) {
+	if _, exists := s.repo[author.ID]; !exists {
+		s.repo[author.ID] = author
+	}
 }

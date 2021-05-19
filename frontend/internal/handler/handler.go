@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -28,6 +29,15 @@ type book struct {
 	AuthorID int
 }
 
+type bookAndAuthor struct {
+	ID        string
+	Title     string
+	Pages     int
+	AuthorID  int
+	FirstName string
+	LastName  string
+}
+
 type result struct {
 	Books   []book
 	Authors []author
@@ -42,6 +52,7 @@ func New(config *config.Config) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
 	var handlerFunc http.HandlerFunc
+	var addBookAndAuthorHandlerFunc http.HandlerFunc
 
 	if config.RPCEnabled {
 		grpcService := grpcService{
@@ -50,10 +61,10 @@ func New(config *config.Config) http.Handler {
 		}
 
 		handlerFunc = GetDashboardByRPC(&grpcService)
-
-
+		addBookAndAuthorHandlerFunc = AddBookAndAuthorByRPC(&grpcService)
 	} else {
 		handlerFunc = GetDashboardByHTTP(config.Books.URL, config.Authors.URL)
+		addBookAndAuthorHandlerFunc = AddBookAndAuthorByHTTP(config.Books.URL)
 	}
 
 	if handlerFunc == nil {
@@ -62,6 +73,7 @@ func New(config *config.Config) http.Handler {
 
 	router.HandleFunc("/api/v1/dashboard", handlerFunc)
 	router.HandleFunc("/api/v1/info", Info(config))
+	router.HandleFunc("/api/v1/author-book", addBookAndAuthorHandlerFunc).Methods("PUT")
 
 	return router
 }
@@ -70,7 +82,7 @@ func Info(config *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if config.RPCEnabled {
 			w.Write([]byte("I am working with RPC"))
-		} else if config.HTTPEnabled {
+		} else {
 			w.Write([]byte("I am working with HTTP"))
 		}
 		json.NewEncoder(w).Encode(config)
@@ -94,6 +106,12 @@ func GetDashboardByHTTP(booksDest, authorsDest string) http.HandlerFunc {
 		}
 
 		json.NewEncoder(w).Encode(result)
+	}
+}
+
+func AddBookAndAuthorByHTTP(booksDest string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Post(booksDest, "application/json", r.Body)
 	}
 }
 
@@ -124,6 +142,43 @@ func GetDashboardByRPC(service *grpcService) http.HandlerFunc {
 		}
 
 		json.NewEncoder(w).Encode(result)
+	}
+}
+
+func AddBookAndAuthorByRPC(g *grpcService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			w.Write([]byte("Body not found"))
+			w.WriteHeader(400)
+			return
+		}
+
+		var result bookAndAuthor
+
+		if err = json.Unmarshal(body, &result); err != nil {
+			w.Write([]byte("Body is not valid"))
+			w.WriteHeader(400)
+			return
+		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		_, err = g.booksClient.AddBookAndAuthor(ctx, &books.BookAndAuthor{
+			ID:        result.ID,
+			Title:     result.Title,
+			Pages:     uint32(result.Pages),
+			AuthorID:  uint32(result.AuthorID),
+			FirstName: result.FirstName,
+			LastName:  result.LastName,
+		})
+
+		if err != nil {
+			w.Write([]byte("gRPC call fails"))
+			w.WriteHeader(400)
+			return
+		}
 	}
 }
 
