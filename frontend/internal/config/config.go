@@ -1,9 +1,11 @@
 package config
 
 type Config struct {
-	HTTP    HTTP
-	Books   Books
-	Authors Authors
+	HTTP        HTTP
+	Books       Books
+	Authors     Authors
+	RPCEnabled  bool
+	HTTPEnabled bool
 }
 
 type HTTP struct {
@@ -12,8 +14,10 @@ type HTTP struct {
 
 type Books struct {
 	URL string
+	RPC string
 }
 
 type Authors struct {
 	URL string
+	RPC string
 }

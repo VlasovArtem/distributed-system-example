@@ -14,6 +14,7 @@ RUN go build -o /out/books cmd/*.go
 
 FROM alpine:3.13.3 AS bin
 ENV HTTP_PORT=8080
+ENV RPC_TCPPORT=50052
 COPY --from=build /out/books /
 EXPOSE ${HTTP_PORT}
 ENTRYPOINT ["/books"]

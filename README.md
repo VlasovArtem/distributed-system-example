@@ -32,3 +32,23 @@ Existing **docker-compose.yml** file contains required microservices port bindin
 [GRPC Basics](https://grpc.io/docs/languages/go/basics/)
 
 [Series of rabbitMQ tutorials](https://www.rabbitmq.com/tutorials/tutorial-one-go.html)
+
+## Protobuf
+Add compiler plugins
+```shell
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
+```
+
+Generate gRPC code
+```shell
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    authors/authors.proto
+```
+
+```shell
+protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    books/books.proto
+```
