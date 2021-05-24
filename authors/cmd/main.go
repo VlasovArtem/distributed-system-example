@@ -36,12 +36,12 @@ func main() {
 		messageQueueConnection.StartMessageQueueConsumer(authorsService)
 	}
 
-	if cfg.RPC.Enabled {
+	go func() {
 		rpc.StartRPCServer(authorsService, &cfg)
-	} else {
-		(&http.Server{
-			Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
-			Handler: rest.New(authorsService),
-		}).ListenAndServe()
-	}
+	}()
+
+	(&http.Server{
+		Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
+		Handler: rest.New(authorsService),
+	}).ListenAndServe()
 }

@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/model"
 	"github.com/VlasovArtem/distributed-system-example/books/internal/service"
 	pb "github.com/VlasovArtem/distributed-system-example/grpc/books"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -43,8 +44,8 @@ func (s *Server) FindBook(_ context.Context, bookRequest *pb.FindBookRequest) (*
 }
 
 func (s *Server) AddBookAndAuthor(_ context.Context, in *pb.BookAndAuthor) (*emptypb.Empty, error) {
-	bookAndAuthor := service.BookAndAuthor{
-		Book: service.Book{
+	bookAndAuthor := model.BookAndAuthor{
+		Book: model.Book{
 			ID:       in.ID,
 			Title:    in.Title,
 			Pages:    int(in.Pages),

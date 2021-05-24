@@ -48,6 +48,11 @@ type grpcService struct {
 	booksClient   books.BooksClient
 }
 
+type details struct {
+	Message string
+	Config  config.Config
+}
+
 func New(config *config.Config) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
@@ -80,12 +85,15 @@ func New(config *config.Config) http.Handler {
 
 func Info(config *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if config.RPCEnabled {
-			w.Write([]byte("I am working with RPC"))
-		} else {
-			w.Write([]byte("I am working with HTTP"))
+		details := details{
+			Config: *config,
 		}
-		json.NewEncoder(w).Encode(config)
+		if config.RPCEnabled {
+			details.Message = "I am working with RPC"
+		} else {
+			details.Message = "I am working with HTTP"
+		}
+		json.NewEncoder(w).Encode(details)
 	}
 }
 

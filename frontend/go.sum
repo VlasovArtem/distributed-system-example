@@ -1,8 +1,8 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/VlasovArtem/distributed-system-example/grpc v0.0.0-20210518084631-2ecffbb97b31 h1:VFuI5DDMhWXRCTx0DC/RCCMqGW7fWvVUDpqOFkSTgfg=
-github.com/VlasovArtem/distributed-system-example/grpc v0.0.0-20210518084631-2ecffbb97b31/go.mod h1:5AyCjS/YnhWVWzxuR2lVBNA+GCwqaTC1T0/Z/g8uVts=
+github.com/VlasovArtem/distributed-system-example/grpc v0.0.0-20210519131532-47dd33fc4c74 h1:MF1k+CxRRhwhlk9BcgYsQItTk84Ci7A4B0/L0j5W0PE=
+github.com/VlasovArtem/distributed-system-example/grpc v0.0.0-20210519131532-47dd33fc4c74/go.mod h1:5AyCjS/YnhWVWzxuR2lVBNA+GCwqaTC1T0/Z/g8uVts=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=

@@ -6,7 +6,6 @@ services:
       context: ./authors
       network: host
     environment:
-      - RPC_ENABLED=true
       - MQ_URL=amqp://rabbitmq:5672
     ports:
       - "8094:8080"
@@ -20,7 +19,6 @@ services:
       context: ./books
       network: host
     environment:
-      - RPC_ENABLED=true
       - MQ_URL=amqp://rabbitmq:5672
     ports:
       - "8095:8080"

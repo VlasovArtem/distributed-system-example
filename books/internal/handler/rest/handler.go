@@ -3,6 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/model"
 	"io/ioutil"
 	"net/http"
 
@@ -49,7 +50,7 @@ func FindAllBooks(s *service.Service) http.HandlerFunc {
 
 func AddBookAndAuthor(s *service.Service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var bookAndAuthor = service.BookAndAuthor{}
+		var bookAndAuthor = model.BookAndAuthor{}
 
 		reqBody, err := ioutil.ReadAll(r.Body)
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/VlasovArtem/distributed-system-example/books/internal/config"
-	"github.com/VlasovArtem/distributed-system-example/books/internal/service"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/model"
 	"github.com/streadway/amqp"
 	"log"
 )
@@ -52,7 +52,7 @@ func (mqs *MessageQueueService) DeclareQueue() *MessageQueueService {
 	return mqs
 }
 
-func (mqs *MessageQueueService) PublishBookAndAuthorMessage(bookAndAuthor service.BookAndAuthor) error  {
+func (mqs *MessageQueueService) PublishBookAndAuthorMessage(bookAndAuthor model.BookAndAuthor) error  {
 	body, _ := json.Marshal(bookAndAuthor)
 
 	message := amqp.Publishing{

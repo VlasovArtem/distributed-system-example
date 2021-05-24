@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/VlasovArtem/distributed-system-example/books/internal/handler/mq"
 	"github.com/VlasovArtem/distributed-system-example/books/internal/handler/rpc"
 	"log"
 	"net/http"
@@ -27,22 +26,16 @@ func main() {
 		logger.Error("error process config", zap.Error(err))
 	}
 	logger.Sugar().Debugf("config: %+v", cfg)
-	var msq *mq.MessageQueueService
 
-	if cfg.MQ.URL != "" {
-		msq = mq.StartMessageQueueConnection(&cfg)
+	booksService := service.New(&cfg)
 
-		defer msq.CloseMessageQueueService()
-	}
-
-	booksService := service.New(msq)
-
-	if cfg.RPC.Enabled {
+	go func() {
 		rpc.StartRPCServer(booksService, &cfg)
-	} else {
-		(&http.Server{
-			Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
-			Handler: rest.New(booksService),
-		}).ListenAndServe()
-	}
+	}()
+
+	(&http.Server{
+		Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
+		Handler: rest.New(booksService),
+	}).ListenAndServe()
+
 }

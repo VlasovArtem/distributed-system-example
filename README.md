@@ -16,6 +16,70 @@ Existing **docker-compose.yml** file contains required microservices port bindin
 - Frontend MS is available by port 8096
 - RabbitMQ is available by ports 5672 and management port 15672; you can check management dashboard console with **guest/guest** as user/password in your browser
 
+## How to use
+The default implementation uses an HTTP communication approach with the services. To work with gRCP, add the next property `RPCENABLED=true` to the frontend container into the `docker-compose.yml`.
+
+### Authors
+The service has the next API:
+* `curl http://localhost:8094/api/v1/authors` - GET. Get all authors.
+* `curl http://localhost:8094/api/v1/authors/{id}` - GET. Get an author by id.
+
+gRPC
+* `grpcurl --plaintext localhost:50051 Authors.GetAuthors`
+* `grpcurl -d @ --plaintext localhost:50051 Authors.FindAuthor`
+
+```json
+{
+  "ID": "your_id"
+}
+```
+
+### Books
+The service has the next API:
+* `curl http://localhost:8095/api/v1/authors` - GET. Get all authors.
+* `curl http://localhost:8095/api/v1/authors/{id}` - GET. Get an author by id.
+
+gRPC
+* `grpcurl --plaintext localhost:50052 Books.GetBooks`
+* `grpcurl -d @ --plaintext localhost:50052 Authors.FindBook`
+* `grpcurl -d @ --plaintext localhost:50052 Authors.AddBookAndAuthor`
+
+FindBookRequest
+```json
+{
+  "ID": "your_id"
+}
+```
+
+BookAndAuthor
+```json
+{
+  "ID": "id",
+  "Title": "title",
+  "Pages":  20,
+  "AuthorID": 4,
+  "FirstName": "first",
+  "LastName": "last"
+}
+```
+
+### Dashboard
+The service has the next API:
+* `curl http://localhost:8096/api/v1/dashboard` - GET. Aggregation from books and authors services.
+* `curl http://localhost:8096/api/v1/info` - GET. Get current config.
+* `curl http://localhost:8096/api/v1/author-book` - PUT. Add an author, and a book.
+
+```json
+{
+  "ID": "id",
+  "Title": "title",
+  "Pages":  20,
+  "AuthorID": 4,
+  "FirstName": "first",
+  "LastName": "last"
+}
+```
+
 ## Useful information
 - Protobuf files (.proto) and the generated ones should be placed in a standalone Go module. 
 - You can use any popular framework for HTTP endpoints implementation, but the most lightweight simple, and popular at the same time is gorilla mux.

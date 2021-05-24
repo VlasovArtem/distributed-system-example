@@ -12,7 +12,6 @@ type HTTP struct {
 
 type RPC struct {
 	TCPPort int
-	Enabled bool
 }
 
 type MessageQueue struct {
