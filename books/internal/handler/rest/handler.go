@@ -119,7 +119,7 @@ func readBody(r *http.Request) (book service.Book, err error) {
 	return book, nil
 }
 
-func updateNumberOfBooks(authorHttpURL string, authorId int) error {
+func updateNumberOfBooks(authorHttpURL string, authorId string) error {
 	authorMap, err := findAuthor(authorHttpURL, authorId)
 
 	if err != nil {
@@ -149,8 +149,8 @@ func updateNumberOfBooks(authorHttpURL string, authorId int) error {
 	return nil
 }
 
-func findAuthor(authorHttpURL string, authorId int) (content map[string]interface{}, err error) {
-	response, err := http.Get(fmt.Sprintf("%s/%d", authorHttpURL, authorId))
+func findAuthor(authorHttpURL string, authorId string) (content map[string]interface{}, err error) {
+	response, err := http.Get(fmt.Sprintf("%s/%s", authorHttpURL, authorId))
 
 	if err != nil {
 		return nil, newError(400, "Could not send request to the author service")
