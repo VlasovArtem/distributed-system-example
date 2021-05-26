@@ -1,4 +1,4 @@
-module gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors
+module github.com/VlasovArtem/distributed-system-example/authors
 
 go 1.16
 
@@ -11,5 +11,4 @@ require (
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
 	golang.org/x/tools v0.1.0 // indirect
-
 )
