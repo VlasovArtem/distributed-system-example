@@ -1,0 +1,48 @@
+#Dashboard
+
+GET http://localhost:8096/api/v1/info
+
+GET http://localhost:8096/api/v1/dashboard
+
+# Books
+
+GET http://localhost:8095/api/v1/books
+
+GET http://localhost:8095/api/v1/books/{id}
+
+POST http://localhost:8095/api/v1/books
+Content-Type: application/json
+{
+    "ID": "6",
+    "Title": "New Title",
+	"Description": "New Book Description",
+	"AuthorID": 3
+}
+
+# Authors
+
+GET http://localhost:8094/api/v1/authors
+
+GET http://localhost:8094/api/v1/authors/{id}
+
+POST http://localhost:8094/api/v1/authors
+Content-Type: application/json
+{
+    "ID": "4",
+    "FirstName": "New First Name",
+    "LastName": "New Last Name",
+    "Age": 33,:
+    "Biography": "New Biography",
+    "NumberOfBooks": 1
+}
+
+PUT http://localhost:8094/api/v1/authors
+Content-Type: application/json
+{
+    "ID": "3",
+    "FirstName": "Updated First Name",
+    "LastName": "Updated Last Name",
+    "Age": 33,
+    "Biography": "Updated Biography",
+    "NumberOfBooks": 0
+}

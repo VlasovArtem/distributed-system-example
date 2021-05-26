@@ -5,9 +5,6 @@ services:
     build:
       context: ./authors
       network: host
-    environment:
-      - HTTP_ENABLED=false
-      - RPC_ENABLED=true
     ports:
       - "8094:8080"
       - "50051:50051"
@@ -20,8 +17,7 @@ services:
       context: ./books
       network: host
     environment:
-      - HTTP_ENABLED=false
-      - RPC_ENABLED=true
+      - AUTHORSHTTP_URL=http://authors:8080/api/v1/authors
     ports:
       - "8095:8080"
       - "50052:50052"
@@ -36,10 +32,6 @@ services:
     environment:
       - BOOKS_URL=http://books:8080/api/v1/books
       - AUTHORS_URL=http://authors:8080/api/v1/authors
-      - BOOKS_RPC=books:50052
-      - AUTHORS_RPC=authors:50051
-      - HTTPENABLED=false
-      - RPCENABLED=true
     expose:
       - "8080"
     ports:
