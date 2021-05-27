@@ -6,26 +6,28 @@ services:
       context: ./authors
       network: host
     ports:
-      - "8094:8080"
+      - "50051:50051"
     expose:
-      - "8080"
+      - "50051"
 
   books:
     build:
       context: ./books
       network: host
+    environment:
+      - AUTHORSRPC_URL=authors:50051
     ports:
-      - "8095:8080"
+      - "50052:50052"
     expose:
-      - "8080"
+      - "50052"
 
   frontend:
     build:
       context: ./frontend
       network: host
     environment:
-      - BOOKS_URL=http://books:8080/api/v1/books
-      - AUTHORS_URL=http://authors:8080/api/v1/authors
+      - BOOKS_RPC=books:50052
+      - AUTHORS_RPC=authors:50051
     expose:
       - "8080"
     ports:

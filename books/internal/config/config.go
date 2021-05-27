@@ -1,9 +1,14 @@
 package config
 
 type Config struct {
-	HTTP HTTP
+	RPC RPC
+	AuthorsRPC AuthorsRPC
 }
 
-type HTTP struct {
-	Port int
+type AuthorsRPC struct {
+	URL string
+}
+
+type RPC struct {
+	TCPPort int
 }

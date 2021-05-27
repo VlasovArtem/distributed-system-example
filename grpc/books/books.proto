@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/VlasovArtem/distributed-system-example/books";
+
+message Book {
+  string ID = 1;
+  string Title = 2;
+  string Description = 3;
+  string AuthorID = 4;
+}
+
+message BooksResponse {
+  repeated Book books = 1;
+}
+
+message FindBookRequest {
+  string ID = 1;
+}
+
+service Books {
+  rpc GetBooks(google.protobuf.Empty) returns (BooksResponse);
+  rpc FindBook(FindBookRequest) returns (Book);
+  rpc AddBook(Book) returns (Book);
+}
