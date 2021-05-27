@@ -41,8 +41,8 @@ func (i *invalidRequestError) Error() string {
 func New(s *service.Service) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/api/v1/books", FindAllBooks(s))
-	router.HandleFunc("/api/v1/books/{id}", FindBookById(s))
+	router.HandleFunc("/api/v1/books", FindAllBooks(s)).Methods("GET")
+	router.HandleFunc("/api/v1/books/{id}", FindBookById(s)).Methods("GET")
 	router.HandleFunc("/api/v1/books", AddBook(s)).Methods("POST")
 
 	return router
@@ -126,7 +126,7 @@ func updateNumberOfBooks(authorHttpURL string, authorId string) error {
 		return err
 	}
 
-	authorMap["NumberOfBooks"] = authorMap["NumberOfBooks"].(uint) + 1
+	authorMap["NumberOfBooks"] = uint(authorMap["NumberOfBooks"].(float64)) + 1
 
 	b := new(bytes.Buffer)
 

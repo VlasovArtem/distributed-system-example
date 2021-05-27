@@ -20,8 +20,8 @@ type result struct {
 func New(config *config.Config) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/api/v1/dashboard", GetDashboardByHTTP(config.Books.URL, config.Authors.URL))
-	router.HandleFunc("/api/v1/info", Info(config))
+	router.HandleFunc("/api/v1/dashboard", GetDashboardByHTTP(config.Books.URL, config.Authors.URL)).Methods("GET")
+	router.HandleFunc("/api/v1/info", Info(config)).Methods("GET")
 
 	return router
 }
@@ -44,6 +44,7 @@ func GetDashboardByHTTP(booksDest, authorsDest string) http.HandlerFunc {
 		if err != nil {
 			w.WriteHeader(400)
 			w.Write([]byte("Could retrieve data from books service"))
+			return
 		}
 
 		var authorsResult []map[string]interface{}
@@ -57,6 +58,7 @@ func GetDashboardByHTTP(booksDest, authorsDest string) http.HandlerFunc {
 		if err != nil {
 			w.WriteHeader(400)
 			w.Write([]byte("Could retrieve data from authors service"))
+			return
 		}
 
 		newAuthorsResult := make(map[string]map[string]interface{})
@@ -78,6 +80,9 @@ func GetDashboardByHTTP(booksDest, authorsDest string) http.HandlerFunc {
 				AuthorLastName:  newAuthorsResult[authorID]["LastName"].(string),
 			})
 		}
+
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(results)
 
 	}
 }

@@ -32,8 +32,8 @@ func (i *invalidRequestError) Error() string {
 func New(s *service.Service) http.Handler {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/api/v1/authors", FindAllAuthors(s))
-	router.HandleFunc("/api/v1/authors/{id}", FindAuthorById(s))
+	router.HandleFunc("/api/v1/authors", FindAllAuthors(s)).Methods("GET")
+	router.HandleFunc("/api/v1/authors/{id}", FindAuthorById(s)).Methods("GET")
 	router.HandleFunc("/api/v1/authors", AddAuthor(s)).Methods("POST")
 	router.HandleFunc("/api/v1/authors", UpdateAuthor(s)).Methods("PUT")
 
