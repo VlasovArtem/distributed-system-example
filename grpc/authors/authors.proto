@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/VlasovArtem/distributed-system-example/authors";
+
+message Author {
+  string ID = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  uint32 Age = 4;
+  string Biography = 5;
+  uint32 NumberOfBooks = 6;
+}
+
+message AuthorsResponse {
+  repeated Author authors = 1;
+}
+
+message FindAuthorRequest {
+  string ID = 1;
+}
+
+service Authors {
+  rpc GetAuthors(google.protobuf.Empty) returns (AuthorsResponse);
+  rpc FindAuthor(FindAuthorRequest) returns (Author);
+  rpc AddAuthor(Author) returns (Author);
+  rpc UpdateAuthor(Author) returns (Author);
+}

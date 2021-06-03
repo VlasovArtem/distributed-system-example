@@ -1,16 +1,20 @@
 package main
 
 import (
+	"github.com/VlasovArtem/distributed-system-example/grpc/authors"
+	pb "github.com/VlasovArtem/distributed-system-example/grpc/books"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
-	"net/http"
+	"net"
 	"strconv"
 
 	"github.com/kelseyhightower/envconfig"
 	"go.uber.org/zap"
 
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/books/internal/config"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/books/internal/handler/rest"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/books/internal/service"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/config"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/handler/rpc"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/service"
 )
 
 func main() {
@@ -26,8 +30,29 @@ func main() {
 	}
 	logger.Sugar().Debugf("config: %+v", cfg)
 
-	(&http.Server{
-		Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
-		Handler: rest.New(service.New()),
-	}).ListenAndServe()
+	authorsRPCConnection := openAuthorsRPCConnection(cfg.AuthorsRPC.URL)
+
+	authorsService := service.New(authorsRPCConnection)
+
+	lis, err := net.Listen("tcp", ":"+strconv.Itoa(cfg.RPC.TCPPort))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterBooksServer(s, &rpc.Server{
+		Service: authorsService,
+	})
+	reflection.Register(s)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
+
+func openAuthorsRPCConnection(address string) authors.AuthorsClient {
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	return authors.NewAuthorsClient(conn)
 }
