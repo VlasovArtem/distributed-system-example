@@ -1,9 +1,14 @@
 package config
 
 type Config struct {
-	HTTP HTTP
+	HTTP        HTTP
+	AuthorsHTTP AuthorsHTTP
 }
 
 type HTTP struct {
-	Port int
+	Port    int
+}
+
+type AuthorsHTTP struct {
+	URL string
 }

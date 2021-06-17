@@ -5,5 +5,5 @@ type Config struct {
 }
 
 type HTTP struct {
-	Port int
+	Port    int
 }

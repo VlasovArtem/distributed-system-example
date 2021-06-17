@@ -2,29 +2,32 @@ package service
 
 import (
 	"errors"
+	"github.com/VlasovArtem/distributed-system-example/books/internal/config"
 )
 
 var ErrNotFound = errors.New("not found")
 
 type Book struct {
-	ID       string
-	Title    string
-	Pages    int
-	AuthorID int
+	ID          string
+	Title       string
+	Description string
+	AuthorID    string
 }
 
 type Service struct {
 	repo map[string]Book
+	Cfg  *config.Config
 }
 
-func New() *Service {
+func New(cfg *config.Config) *Service {
 	return &Service{repo: map[string]Book{
-		"1": {ID: "1", Title: "Semiosis: A Novel - v2", Pages: 326, AuthorID: 1},
-		"2": {ID: "2", Title: "The Loosening Skin - v2", Pages: 132, AuthorID: 1},
-		"3": {ID: "3", Title: "Ninefox Gambit - v2", Pages: 384, AuthorID: 2},
-		"4": {ID: "4", Title: "Raven Stratagem - v2", Pages: 400, AuthorID: 3},
-		"5": {ID: "5", Title: "Revenant Gun - v2", Pages: 466, AuthorID: 3},
-	}}
+		"1": {ID: "1", Title: "Semiosis: A Novel - v2", Description: "Semiosis: A Novel - v2", AuthorID: "1"},
+		"2": {ID: "2", Title: "The Loosening Skin - v2", Description: "The Loosening Skin - v2", AuthorID: "1"},
+		"3": {ID: "3", Title: "Ninefox Gambit - v2", Description: "Ninefox Gambit - v2", AuthorID: "2"},
+		"4": {ID: "4", Title: "Raven Stratagem - v2", Description: "Raven Stratagem - v2", AuthorID: "3"},
+		"5": {ID: "5", Title: "Revenant Gun - v2", Description: "Revenant Gun - v2", AuthorID: "3"},
+	}, Cfg: cfg,
+	}
 }
 
 func (s *Service) List() []Book {
@@ -40,4 +43,13 @@ func (s *Service) GetByID(id string) (Book, error) {
 		return b, nil
 	}
 	return Book{}, ErrNotFound
+}
+
+func (s *Service) ExistsById(id string) bool {
+	_, ok := s.repo[id]
+	return ok
+}
+
+func (s *Service) Save(book Book) {
+	s.repo[book.ID] = book
 }

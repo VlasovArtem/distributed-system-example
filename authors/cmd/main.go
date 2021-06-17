@@ -1,16 +1,15 @@
 package main
 
 import (
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/handler/rest"
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/service"
+	"github.com/kelseyhightower/envconfig"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"strconv"
 
-	"github.com/kelseyhightower/envconfig"
-	"go.uber.org/zap"
-
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/config"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/handler/rest"
-	"gitlab.lohika.com/dmiroshnichenko/distributed-comm-stubs/authors/internal/service"
+	"github.com/VlasovArtem/distributed-system-example/authors/internal/config"
 )
 
 func main() {
@@ -25,9 +24,10 @@ func main() {
 		logger.Error("error process config", zap.Error(err))
 	}
 	logger.Sugar().Debugf("config: %+v", cfg)
+	authorsService := service.New()
 
 	(&http.Server{
 		Addr:    ":" + strconv.Itoa(cfg.HTTP.Port),
-		Handler: rest.New(service.New()),
+		Handler: rest.New(authorsService),
 	}).ListenAndServe()
 }

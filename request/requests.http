@@ -1,0 +1,89 @@
+# Dashboard
+## Get Info
+#
+GET http://localhost:8096/api/v1/info
+
+###
+
+#
+## Get Dashboard (Authors + Books)
+#
+GET http://localhost:8096/api/v1/dashboard
+
+###
+
+# Books
+## Get Books
+GET http://localhost:8095/api/v1/books
+
+###
+
+#
+## Get Book by id
+#
+GET http://localhost:8095/api/v1/books/5
+
+###
+
+#
+## Add Book
+#
+POST http://localhost:8095/api/v1/books
+Content-Type: application/json
+
+{
+    "ID": "6",
+    "Title": "New Title",
+	"Description": "New Book Description",
+	"AuthorID": "3"
+}
+
+###
+
+#
+## Authors
+#
+GET http://localhost:8094/api/v1/authors
+
+###
+
+#
+## Authors by ID
+#
+GET http://localhost:8094/api/v1/authors/3
+
+###
+
+#
+## Add Author
+#
+POST http://localhost:8094/api/v1/authors
+Content-Type: application/json
+
+{
+    "ID": "4",
+    "FirstName": "New First Name",
+    "LastName": "New Last Name",
+    "Age": 33,
+    "Biography": "New Biography",
+    "NumberOfBooks": 1
+}
+
+###
+
+#
+## Update Author
+#
+PUT http://localhost:8094/api/v1/authors
+Content-Type: application/json
+
+{
+    "ID": "3",
+    "FirstName": "Updated First Name",
+    "LastName": "Updated Last Name",
+    "Age": 33,
+    "Biography": "Updated Biography",
+    "NumberOfBooks": 0
+}
+
+###
